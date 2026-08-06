@@ -376,10 +376,13 @@ streamlit run dashboard/app.py
 
 ## 👤 Author
 
-**Suhirthakumar**
+**Dr Suhirthakumar Puvanendran**
+
 Bioinformatician | AI Researcher | Data Scientist | Lecturer
 
-**Research interests:** Precision Medicine · Healthcare AI · Clinical Data Science · Computational Biology · Predictive Modelling
+**Research interests:** 
+
+Precision Medicine · Healthcare AI · Clinical Data Science · Computational Biology · Predictive Modelling
 
 ---
 
