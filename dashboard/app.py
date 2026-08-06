@@ -9,9 +9,19 @@ Features:
 3. Model explanation
 
 Author:
-Suhirthakumar Puvanendran
+Dr Suhirthakumar Puvanendran
 """
+import sys
+import os
 
+# Add project root to Python path
+PROJECT_ROOT = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
+
+sys.path.append(PROJECT_ROOT)
 
 import streamlit as st
 
@@ -24,13 +34,14 @@ import plotly.express as px
 
 
 
+
 # =====================================================
 # Page Configuration
 # =====================================================
 
 st.set_page_config(
 
-    page_title="Diabetes Risk Prediction",
+    page_title="Diabetes Risk Prediction Platform",
 
     page_icon="🩺",
 
@@ -41,58 +52,228 @@ st.set_page_config(
 
 
 # =====================================================
-# Paths
+# Modern Healthcare Styling
 # =====================================================
 
-#MODEL_PATH = "models/random_forest.pkl"
+st.markdown(
+
+    """
+
+<style>
+
+
+/* Main background */
+
+.stApp {
+
+    background-color:#f5f9fc;
+
+}
+
+
+
+/* Titles */
+
+h1 {
+
+    color:#0b3954;
+
+    font-weight:700;
+
+}
+
+
+
+h2 {
+
+    color:#087e8b;
+
+}
+
+
+
+h3 {
+
+    color:#0b3954;
+
+}
+
+
+
+/* Sidebar */
+
+section[data-testid="stSidebar"] {
+
+    background-color:#e8f3f8;
+
+}
+
+
+
+/* Cards */
+
+.card {
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    box-shadow:0px 4px 15px rgba(0,0,0,0.08);
+
+    margin-bottom:20px;
+
+}
+
+
+
+/* Metrics */
+
+div[data-testid="metric-container"] {
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    box-shadow:0px 3px 10px rgba(0,0,0,0.08);
+
+}
+
+
+
+/* Buttons */
+
+.stButton button {
+
+    width:100%;
+
+    background-color:#087e8b;
+
+    color:white;
+
+    border-radius:10px;
+
+    height:45px;
+
+    font-size:17px;
+
+    font-weight:600;
+
+}
+
+
+
+.stButton button:hover {
+
+    background-color:#0b3954;
+
+}
+
+
+
+/* Footer */
+
+.footer {
+
+    text-align:center;
+
+    color:#6c757d;
+
+    margin-top:40px;
+
+    font-size:14px;
+
+}
+
+
+</style>
+
+
+""",
+
+unsafe_allow_html=True
+
+)
+
+
+
+# =====================================================
+# File Paths
+# =====================================================
+
+MODEL_PATH = "models/random_forest.pkl"
 
 SCALER_PATH = "models/scaler.pkl"
 
 DATA_PATH = "data/processed/diabetes_features.csv"
 
 
+
 # =====================================================
-# Load model
+# Load Model
 # =====================================================
 
 @st.cache_resource
+
 def load_model():
-    from src.utils import load_model
 
-    model = load_model(
 
-"models/random_forest.pkl"
+    model = joblib.load(
 
-)
+        MODEL_PATH
+
+    )
+
 
     scaler = joblib.load(
+
         SCALER_PATH
+
     )
+
 
     return model, scaler
 
 
 
-model, scaler = load_model()
-
-
-
 # =====================================================
-# Load dataset
+# Load Data
 # =====================================================
 
 @st.cache_data
+
 def load_data():
 
-    df = pd.read_csv(
+
+    return pd.read_csv(
+
         DATA_PATH
+
     )
 
-    return df
 
 
+try:
 
-df = load_data()
+
+    model, scaler = load_model()
+
+    df = load_data()
+
+
+except Exception as e:
+
+
+    st.error(
+
+        f"Application loading error: {e}"
+
+    )
+
+    st.stop()
 
 
 
@@ -101,21 +282,24 @@ df = load_data()
 # =====================================================
 
 st.sidebar.title(
-    "Diabetes Analytics"
+
+    "🩺 Diabetes Analytics"
+
 )
+
 
 
 page = st.sidebar.radio(
 
-    "Select Analysis",
+    "Select Module",
 
     [
 
         "Patient Risk Prediction",
 
-        "Population Analysis",
+        "Population Analytics",
 
-        "Clinical Factors"
+        "Clinical Risk Factors"
 
     ]
 
@@ -123,27 +307,94 @@ page = st.sidebar.radio(
 
 
 
+st.sidebar.markdown(
+
+    """
+
+---
+
+### About
+
+This dashboard uses machine learning
+to estimate diabetes risk from
+clinical measurements.
+
+### Technology
+
+- Python
+- Scikit-learn
+- Streamlit
+- Machine Learning
+
+---
+
+"""
+
+)
+
+
+
 # =====================================================
-# PAGE 1
-# Patient prediction
+# Dashboard Header
 # =====================================================
+
+
+st.markdown(
+
+"""
+
+<div class="card">
+
+
+<h1>
+
+🩺 Diabetes Risk Prediction Platform
+
+</h1>
+
+
+<p>
+
+AI-powered clinical decision support dashboard
+for diabetes risk assessment and population analytics.
+
+</p>
+
+
+</div>
+
+
+""",
+
+unsafe_allow_html=True
+
+)
+
+
+
+# =====================================================
+# Page 1: Prediction
+# =====================================================
+
 
 if page == "Patient Risk Prediction":
 
 
-    st.title(
-        "🩺 Individual Diabetes Risk Prediction"
+
+    st.subheader(
+
+        "Individual Patient Assessment"
+
     )
+
 
 
     st.write(
 
-        """
-        Enter patient clinical measurements
-        to estimate diabetes risk.
-        """
+        "Enter patient clinical measurements below."
 
     )
+
 
 
     col1, col2 = st.columns(2)
@@ -159,8 +410,6 @@ if page == "Patient Risk Prediction":
 
             min_value=0,
 
-            max_value=20,
-
             value=2
 
         )
@@ -168,11 +417,9 @@ if page == "Patient Risk Prediction":
 
         glucose = st.number_input(
 
-            "Glucose",
+            "Glucose level (mg/dL)",
 
             min_value=0,
-
-            max_value=300,
 
             value=120
 
@@ -184,8 +431,6 @@ if page == "Patient Risk Prediction":
             "Blood Pressure",
 
             min_value=0,
-
-            max_value=200,
 
             value=80
 
@@ -201,6 +446,7 @@ if page == "Patient Risk Prediction":
             value=20
 
         )
+
 
 
     with col2:
@@ -245,8 +491,6 @@ if page == "Patient Risk Prediction":
 
             min_value=1,
 
-            max_value=120,
-
             value=45
 
         )
@@ -275,6 +519,7 @@ if page == "Patient Risk Prediction":
 
     patient = pd.DataFrame({
 
+
         "Pregnancies":[pregnancies],
 
         "Glucose":[glucose],
@@ -293,13 +538,21 @@ if page == "Patient Risk Prediction":
 
         "Risk_Score":[risk_score]
 
+
     })
 
 
 
+    st.markdown("---")
+
+
+
     if st.button(
-        "Predict Diabetes Risk"
+
+        "Generate Diabetes Risk Prediction"
+
     ):
+
 
 
         patient_scaled = scaler.transform(
@@ -325,42 +578,67 @@ if page == "Patient Risk Prediction":
 
 
 
-        st.subheader(
-            "Prediction Result"
-        )
+        col1, col2 = st.columns(2)
 
 
 
-        st.metric(
+        with col1:
 
-            "Risk Probability",
 
-            f"{probability:.1%}"
+            st.metric(
 
-        )
+                "Risk Probability",
+
+                f"{probability:.1%}"
+
+            )
+
+
+
+        with col2:
+
+
+            st.metric(
+
+                "Risk Score",
+
+                risk_score
+
+            )
+
+
+
+        st.markdown("---")
 
 
 
         if prediction == 1:
 
 
+
             st.error(
 
-                "High Diabetes Risk"
+                "HIGH DIABETES RISK"
 
             )
 
 
-            st.write(
+
+            st.info(
 
                 """
-                Suggested clinical actions:
 
-                - HbA1c assessment
-                - Lifestyle evaluation
-                - Clinical follow-up
+Recommended clinical considerations:
 
-                """
+✓ HbA1c assessment
+
+✓ Lifestyle evaluation
+
+✓ Clinical follow-up
+
+✓ Cardiometabolic risk assessment
+
+"""
 
             )
 
@@ -368,31 +646,33 @@ if page == "Patient Risk Prediction":
         else:
 
 
+
             st.success(
 
-                "Low Diabetes Risk"
+                "LOW DIABETES RISK"
 
             )
 
 
 
 # =====================================================
-# PAGE 2
-# Population analysis
+# Page 2 Population Analytics
 # =====================================================
 
 
-elif page == "Population Analysis":
+elif page == "Population Analytics":
 
 
-    st.title(
 
-        "Population Diabetes Analysis"
+    st.subheader(
+
+        "Population Diabetes Overview"
 
     )
 
 
-    outcome_count = (
+
+    outcome = (
 
         df["Outcome"]
 
@@ -403,7 +683,8 @@ elif page == "Population Analysis":
     )
 
 
-    outcome_count.columns = [
+
+    outcome.columns=[
 
         "Outcome",
 
@@ -415,15 +696,16 @@ elif page == "Population Analysis":
 
     fig = px.bar(
 
-        outcome_count,
+        outcome,
 
         x="Outcome",
 
         y="Patients",
 
-        title="Diabetes Distribution"
+        title="Diabetes Outcome Distribution"
 
     )
+
 
 
     st.plotly_chart(
@@ -436,23 +718,18 @@ elif page == "Population Analysis":
 
 
 
-    st.subheader(
-
-        "BMI Distribution"
-
-    )
-
-
-
     fig2 = px.histogram(
 
         df,
 
         x="BMI",
 
-        nbins=30
+        nbins=30,
+
+        title="BMI Distribution"
 
     )
+
 
 
     st.plotly_chart(
@@ -466,19 +743,20 @@ elif page == "Population Analysis":
 
 
 # =====================================================
-# PAGE 3
-# Clinical factors
+# Page 3 Clinical Factors
 # =====================================================
 
 
 else:
 
 
-    st.title(
+
+    st.subheader(
 
         "Clinical Risk Factors"
 
     )
+
 
 
     correlation = (
@@ -487,28 +765,22 @@ else:
 
         ["Outcome"]
 
+        .drop("Outcome")
+
         .sort_values()
 
     )
 
 
 
-    correlation = (
-
-        correlation
-
-        .drop("Outcome")
-
-    )
-
-
     fig = px.bar(
 
         correlation,
 
-        title="Feature Association With Diabetes Outcome"
+        title="Clinical Variable Association"
 
     )
+
 
 
     st.plotly_chart(
@@ -521,13 +793,27 @@ else:
 
 
 
-    st.write(
+# =====================================================
+# Footer
+# =====================================================
 
-        """
 
-        Higher positive values indicate stronger
-        association with diabetes outcome.
+st.markdown(
 
-        """
+"""
 
-    )
+<div class="footer">
+
+Developed as a clinical machine learning portfolio project
+
+<br>
+
+Python | Machine Learning | Explainable AI | Streamlit
+
+</div>
+
+""",
+
+unsafe_allow_html=True
+
+)
