@@ -278,13 +278,78 @@ except Exception as e:
 
 
 # =====================================================
+# Sidebar Styling
+# =====================================================
+
+st.markdown(
+    """
+    <style>
+
+    /* Sidebar background */
+    section[data-testid="stSidebar"] {
+
+        background-color: #e8f3f8;
+
+    }
+
+
+    /* Make all sidebar text black */
+    section[data-testid="stSidebar"] * {
+
+        color: #000000 !important;
+
+    }
+
+
+    /* Sidebar title */
+    section[data-testid="stSidebar"] h1 {
+
+        color: #000000 !important;
+
+        font-weight: 700;
+
+    }
+
+
+    /* Radio button text */
+    section[data-testid="stSidebar"] label {
+
+        color: #000000 !important;
+
+        font-weight: 600;
+
+    }
+
+
+    /* Sidebar markdown headings */
+    section[data-testid="stSidebar"] h3 {
+
+        color: #000000 !important;
+
+    }
+
+
+    /* Sidebar bullet points */
+    section[data-testid="stSidebar"] li {
+
+        color: #000000 !important;
+
+    }
+
+
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+
+# =====================================================
 # Sidebar
 # =====================================================
 
 st.sidebar.title(
-
     "🩺 Diabetes Analytics"
-
 )
 
 
@@ -315,9 +380,10 @@ st.sidebar.markdown(
 
 ### About
 
-This dashboard uses machine learning
-to estimate diabetes risk from
+This dashboard uses machine learning  
+to estimate diabetes risk from  
 clinical measurements.
+
 
 ### Technology
 
@@ -325,6 +391,7 @@ clinical measurements.
 - Scikit-learn
 - Streamlit
 - Machine Learning
+
 
 ---
 
