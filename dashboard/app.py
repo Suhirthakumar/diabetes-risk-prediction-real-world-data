@@ -44,12 +44,11 @@ st.set_page_config(
 # Paths
 # =====================================================
 
-MODEL_PATH = "models/random_forest.pkl"
+#MODEL_PATH = "models/random_forest.pkl"
 
 SCALER_PATH = "models/scaler.pkl"
 
 DATA_PATH = "data/processed/diabetes_features.csv"
-
 
 
 # =====================================================
@@ -58,10 +57,13 @@ DATA_PATH = "data/processed/diabetes_features.csv"
 
 @st.cache_resource
 def load_model():
+    from src.utils import load_model
 
-    model = joblib.load(
-        MODEL_PATH
-    )
+    model = load_model(
+
+"models/random_forest.pkl"
+
+)
 
     scaler = joblib.load(
         SCALER_PATH

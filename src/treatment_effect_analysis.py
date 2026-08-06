@@ -29,7 +29,14 @@ os.makedirs("figures", exist_ok=True)
 # Load dataset
 # -----------------------------------------------------
 
-df = pd.read_csv("data/processed/diabetes_features.csv")
+from utils import load_data
+
+
+df = load_data(
+
+"data/processed/diabetes_features.csv"
+
+)
 
 # -----------------------------------------------------
 # Simulate treatment

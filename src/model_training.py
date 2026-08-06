@@ -241,14 +241,16 @@ for name, model in models.items():
 
 
 
-    joblib.dump(
+    from utils import save_model
 
-        model,
 
-        f"{MODEL_PATH}/{name}.pkl"
+save_model(
 
-    )
+    model,
 
+    "models/random_forest.pkl"
+
+)
 
 
 # -------------------------------------
