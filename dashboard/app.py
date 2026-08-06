@@ -123,6 +123,35 @@ div[data-testid="stNumberInput"] label {
 }
 
 
+/* Sidebar */
+
+section[data-testid="stSidebar"] {
+
+    background-color:#eaf4fb;
+
+}
+
+/* Buttons */
+
+.stButton button {
+
+    background-color:#0B3954;
+
+    color:white !important;
+
+    border-radius:10px;
+
+    height:45px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+}
+
+
+
+
 
 </style>
 
