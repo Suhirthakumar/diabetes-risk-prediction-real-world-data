@@ -35,6 +35,7 @@ import plotly.express as px
 
 
 
+
 # =====================================================
 # Page Configuration
 # =====================================================
@@ -52,13 +53,12 @@ st.set_page_config(
 
 
 # =====================================================
-# Modern Healthcare Styling
+# Modern Healthcare Theme
 # =====================================================
 
 st.markdown(
 
-    """
-
+"""
 <style>
 
 
@@ -72,29 +72,30 @@ st.markdown(
 
 
 
-/* Titles */
+/* All text */
+
+.stApp * {
+
+    color:#000000;
+
+}
+
+
+
+/* Main headings */
 
 h1 {
 
-    color:#0b3954;
+    color:#0b3954 !important;
 
     font-weight:700;
 
 }
 
 
+h2, h3 {
 
-h2 {
-
-    color:#087e8b;
-
-}
-
-
-
-h3 {
-
-    color:#0b3954;
+    color:#0b3954 !important;
 
 }
 
@@ -110,6 +111,14 @@ section[data-testid="stSidebar"] {
 
 
 
+section[data-testid="stSidebar"] * {
+
+    color:#000000 !important;
+
+}
+
+
+
 /* Cards */
 
 .card {
@@ -120,7 +129,8 @@ section[data-testid="stSidebar"] {
 
     border-radius:15px;
 
-    box-shadow:0px 4px 15px rgba(0,0,0,0.08);
+    box-shadow:
+    0px 4px 15px rgba(0,0,0,0.08);
 
     margin-bottom:20px;
 
@@ -138,7 +148,16 @@ div[data-testid="metric-container"] {
 
     border-radius:15px;
 
-    box-shadow:0px 3px 10px rgba(0,0,0,0.08);
+    box-shadow:
+    0px 3px 10px rgba(0,0,0,0.08);
+
+}
+
+
+
+div[data-testid="metric-container"] * {
+
+    color:black !important;
 
 }
 
@@ -148,22 +167,19 @@ div[data-testid="metric-container"] {
 
 .stButton button {
 
-    width:100%;
-
     background-color:#087e8b;
 
-    color:white;
+    color:white !important;
 
     border-radius:10px;
 
     height:45px;
 
-    font-size:17px;
+    font-size:16px;
 
     font-weight:600;
 
 }
-
 
 
 .stButton button:hover {
@@ -180,17 +196,14 @@ div[data-testid="metric-container"] {
 
     text-align:center;
 
-    color:#6c757d;
+    color:#555555;
 
     margin-top:40px;
-
-    font-size:14px;
 
 }
 
 
 </style>
-
 
 """,
 
@@ -201,8 +214,9 @@ unsafe_allow_html=True
 
 
 # =====================================================
-# File Paths
+# Paths
 # =====================================================
+
 
 MODEL_PATH = "models/random_forest.pkl"
 
@@ -212,9 +226,11 @@ DATA_PATH = "data/processed/diabetes_features.csv"
 
 
 
+
 # =====================================================
 # Load Model
 # =====================================================
+
 
 @st.cache_resource
 
@@ -239,9 +255,11 @@ def load_model():
 
 
 
+
 # =====================================================
 # Load Data
 # =====================================================
+
 
 @st.cache_data
 
@@ -256,12 +274,14 @@ def load_data():
 
 
 
+
 try:
 
 
     model, scaler = load_model()
 
     df = load_data()
+
 
 
 except Exception as e:
@@ -277,79 +297,16 @@ except Exception as e:
 
 
 
-# =====================================================
-# Sidebar Styling
-# =====================================================
-
-st.markdown(
-    """
-    <style>
-
-    /* Sidebar background */
-    section[data-testid="stSidebar"] {
-
-        background-color: #e8f3f8;
-
-    }
-
-
-    /* Make all sidebar text black */
-    section[data-testid="stSidebar"] * {
-
-        color: #000000 !important;
-
-    }
-
-
-    /* Sidebar title */
-    section[data-testid="stSidebar"] h1 {
-
-        color: #000000 !important;
-
-        font-weight: 700;
-
-    }
-
-
-    /* Radio button text */
-    section[data-testid="stSidebar"] label {
-
-        color: #000000 !important;
-
-        font-weight: 600;
-
-    }
-
-
-    /* Sidebar markdown headings */
-    section[data-testid="stSidebar"] h3 {
-
-        color: #000000 !important;
-
-    }
-
-
-    /* Sidebar bullet points */
-    section[data-testid="stSidebar"] li {
-
-        color: #000000 !important;
-
-    }
-
-
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
 
 # =====================================================
 # Sidebar
 # =====================================================
 
+
 st.sidebar.title(
+
     "🩺 Diabetes Analytics"
+
 )
 
 
@@ -374,15 +331,15 @@ page = st.sidebar.radio(
 
 st.sidebar.markdown(
 
-    """
+"""
 
 ---
 
 ### About
 
-This dashboard uses machine learning  
-to estimate diabetes risk from  
-clinical measurements.
+This dashboard uses machine learning
+to estimate diabetes risk from clinical
+measurements.
 
 
 ### Technology
@@ -401,8 +358,9 @@ clinical measurements.
 
 
 
+
 # =====================================================
-# Dashboard Header
+# Header
 # =====================================================
 
 
@@ -430,7 +388,6 @@ for diabetes risk assessment and population analytics.
 
 </div>
 
-
 """,
 
 unsafe_allow_html=True
@@ -439,8 +396,9 @@ unsafe_allow_html=True
 
 
 
+
 # =====================================================
-# Page 1: Prediction
+# Patient Prediction
 # =====================================================
 
 
@@ -451,14 +409,6 @@ if page == "Patient Risk Prediction":
     st.subheader(
 
         "Individual Patient Assessment"
-
-    )
-
-
-
-    st.write(
-
-        "Enter patient clinical measurements below."
 
     )
 
@@ -586,7 +536,6 @@ if page == "Patient Risk Prediction":
 
     patient = pd.DataFrame({
 
-
         "Pregnancies":[pregnancies],
 
         "Glucose":[glucose],
@@ -605,12 +554,7 @@ if page == "Patient Risk Prediction":
 
         "Risk_Score":[risk_score]
 
-
     })
-
-
-
-    st.markdown("---")
 
 
 
@@ -636,12 +580,15 @@ if page == "Patient Risk Prediction":
         )[0][1]
 
 
-
         prediction = model.predict(
 
             patient_scaled
 
         )[0]
+
+
+
+        st.markdown("---")
 
 
 
@@ -667,7 +614,7 @@ if page == "Patient Risk Prediction":
 
             st.metric(
 
-                "Risk Score",
+                "Clinical Risk Score",
 
                 risk_score
 
@@ -683,47 +630,100 @@ if page == "Patient Risk Prediction":
 
 
 
-            st.error(
+            st.markdown(
 
-                "HIGH DIABETES RISK"
+            """
+
+            <div class="card"
+            style="
+            background:#ffecec;
+            border-left:6px solid #d9534f;
+            ">
+
+
+            <h3>
+
+            HIGH DIABETES RISK
+
+            </h3>
+
+
+            <p>
+
+            Recommended clinical considerations:
+
+            <br><br>
+
+            ✓ HbA1c assessment
+
+            <br>
+
+            ✓ Lifestyle evaluation
+
+            <br>
+
+            ✓ Clinical follow-up
+
+            <br>
+
+            ✓ Cardiometabolic risk assessment
+
+            </p>
+
+
+            </div>
+
+            """,
+
+            unsafe_allow_html=True
 
             )
 
-
-
-            st.info(
-
-                """
-
-Recommended clinical considerations:
-
-✓ HbA1c assessment
-
-✓ Lifestyle evaluation
-
-✓ Clinical follow-up
-
-✓ Cardiometabolic risk assessment
-
-"""
-
-            )
 
 
         else:
 
 
+            st.markdown(
 
-            st.success(
+            """
 
-                "LOW DIABETES RISK"
+            <div class="card"
+            style="
+            background:#eaf7ea;
+            border-left:6px solid #28a745;
+            ">
+
+
+            <h3>
+
+            LOW DIABETES RISK
+
+            </h3>
+
+
+            <p>
+
+            Current measurements indicate
+            lower predicted diabetes risk.
+
+            </p>
+
+
+            </div>
+
+
+            """,
+
+            unsafe_allow_html=True
 
             )
 
 
 
+
 # =====================================================
-# Page 2 Population Analytics
+# Population Analytics
 # =====================================================
 
 
@@ -738,7 +738,6 @@ elif page == "Population Analytics":
     )
 
 
-
     outcome = (
 
         df["Outcome"]
@@ -750,7 +749,6 @@ elif page == "Population Analytics":
     )
 
 
-
     outcome.columns=[
 
         "Outcome",
@@ -758,7 +756,6 @@ elif page == "Population Analytics":
         "Patients"
 
     ]
-
 
 
     fig = px.bar(
@@ -772,7 +769,6 @@ elif page == "Population Analytics":
         title="Diabetes Outcome Distribution"
 
     )
-
 
 
     st.plotly_chart(
@@ -798,7 +794,6 @@ elif page == "Population Analytics":
     )
 
 
-
     st.plotly_chart(
 
         fig2,
@@ -809,8 +804,10 @@ elif page == "Population Analytics":
 
 
 
+
+
 # =====================================================
-# Page 3 Clinical Factors
+# Clinical Risk Factors
 # =====================================================
 
 
@@ -849,7 +846,6 @@ else:
     )
 
 
-
     st.plotly_chart(
 
         fig,
@@ -857,6 +853,7 @@ else:
         use_container_width=True
 
     )
+
 
 
 
