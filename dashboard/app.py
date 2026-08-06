@@ -133,24 +133,32 @@ section[data-testid="stSidebar"] {
 
 /* Buttons */
 
+/* Prediction Button */
+
 .stButton button {
+
+    background-color:#087E8B;
+
+    color:white !important;
+
+    border-radius:12px;
+
+    height:50px;
+
+    font-size:17px;
+
+    font-weight:700;
+
+}
+
+
+.stButton button:hover {
 
     background-color:#0B3954;
 
     color:white !important;
 
-    border-radius:10px;
-
-    height:45px;
-
-    font-size:16px;
-
-    font-weight:600;
-
 }
-
-
-
 
 
 </style>
