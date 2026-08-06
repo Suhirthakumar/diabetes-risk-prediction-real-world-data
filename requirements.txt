@@ -9,3 +9,6 @@ openpyxl
 xgboost
 joblib
 shap
+reportlab
+streamlit 
+plotly
